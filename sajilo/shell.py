@@ -1,4 +1,4 @@
-import sajilo
+import lexer
 
 while True:
     text = input(
