@@ -1,0 +1,17 @@
+// Basic Features of Sajilo
+
+// Integers -- Anka 
+
+a = 5;
+
+lekha a, "\n";
+
+// Floats and Doubles
+b = 5.0;
+
+//Changing type from integer to float
+c = dash(a);
+
+lekha b, "\n";
+
+lekha c, "\n";
