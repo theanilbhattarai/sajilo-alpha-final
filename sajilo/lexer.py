@@ -1,249 +1,232 @@
-## Constants
-import string
-from index import Pos
-from errors import *
+## Imports
 
-NUMS = '0123456789'
-CHARS = string.ascii_letters
-ALPHANUM = NUMS + CHARS
+#Importing Lex and Yacc from the ply module
 
-## TOKENS
-TT_INT = 'INT'
-TT_FLOAT = 'FLOAT'
-TT_STRING = 'STRING'
-TT_IDENTIFIER = 'IDENTIFIER'
-TT_KEYWORD = 'KEYWORD'
-TT_PLUS = 'PLUS'
-TT_MINUS = 'MINUS'
-TT_MUL = 'MUL'
-TT_DIV = 'DIV'
-TT_POW = 'POW'
-TT_EQ = 'EQ'
-TT_LPAREN = 'LPAREN'
-TT_RPAREN = 'RPAREN'
-TT_EQUALS = 'EQUALS'
-TT_NE = 'NOT EQUALS'
-TT_LT = 'LESS THAN'
-TT_LTE = 'LESS THAN EQUALS'
-TT_GTE = 'GRT THAN EQUALS'
-TT_GT = 'GRT THAN'
-TT_COMMA = 'COMMA'
-TT_ARROW = 'ARROW'
-TT_EOF = 'EOF'
+from ply import lex
 
-KEYWORDS = [
-    'man', #let
-    'ra', #and
-    'athawa', #or
-    'not', #not
-    'yedi', #if
-    'navaye', #else
-    'loop', #for loop
-    'lai', #in
-    'jaba', #while
-    'vidhi', #function
-]
 
-class Token:
-    def __init__(self, type_, value = None, pos_start = None, pos_end = None):
-        self.type = type_
-        self.value = value 
+# Tokens 
+''' 
+Token are defined here to make it easier to reuse the values later
+Reserved keywords need to be done separately
+'''
 
-        if pos_start:
-            self.pos_start = pos_start.copy()
-            self.pos_end = pos_start.copy()
-            self.pos_end.advance()
-        
-        if pos_end:
-            self.pos_end = pos_end.copy()
-    
-    def match(self, type_, value):
-        return self.type == type_ and self.value == value
-    
-    def __repr__(self):
-        if self.value: return f'{self.type} : {self.value}'
-        return f'{self.type}'
-    
-## lexer class
+keywords = (
+        # Reserved keywords, Always required
+    ## Needs refactoring. Never do this way.
+    'MAN', #VAR
+    'YEDI', #IF
+    'NAVAYE', #ELSE
+    'LEKHA', #PRINT/OUTPUT/RETURN
+    'PADHA', #READ/INPUT/SCANF
+    'VIDHI', #FUNCTION/DEF
+)
 
-class Lexer:
-    def __init__(self, file_name, text):
-        self.file_name = file_name
-        self.text = text 
-        self.pos = Pos(-1,0,-1,file_name, text)
-        self.current_char = None
-        self.advance()
-    
-    def advance(self):
-        self.pos.advance(self.current_char)
-        self.current_char = self.text[self.pos.index] if self.pos.index < len(self.text) else None
-    
-    def make_tokens(self):
-        tokens = []
+tokens = keywords + (
+    # Different Types
+    'INT', #Integer - Anka
+    'FLOAT', #Floating point values
+    'STRING', #letters
+    'ID', #identifiers
 
-        while self.current_char != None:
-            if self.current_char in '\t':
-                self.advance()
-            elif self.current_char in ' ':
-                self.advance()
-            elif self.current_char in NUMS:
-                tokens.append(self.make_nums())               
-            elif self.current_char in CHARS:
-                tokens.append(self.make_identifier())               
-            elif self.current_char == '"':
-                tokens.append(self.make_strings())
-            elif self.current_char == '+':
-                tokens.append(Token(TT_PLUS, pos_start = self.pos))
-                self.advance()
-            elif self.current_char == '-':
-                tokens.append(self.make_minus_or_arrow())
-            elif self.current_char == '*':
-                tokens.append(Token(TT_MUL, pos_start = self.pos))
-                self.advance()
-            elif self.current_char == '/':
-                tokens.append(Token(TT_DIV, pos_start = self.pos))
-                self.advance()
-            elif self.current_char == '^':
-                tokens.append(Token(TT_POW, pos_start = self.pos))
-                self.advance()
-            elif self.current_char == '(':
-                tokens.append(Token(TT_LPAREN), pos_start = self.pos)
-                self.advance()
-            elif self.current_char == ')':
-                tokens.append(Token(TT_RPAREN),pos_start = self.pos)
-                self.advance()
-            elif self.current_char == '!':
-                token, error = self.make_not_equals()
-                if error: return [], error
-                tokens.append(token)
-            elif self.current_char == '=':
-                tokens.append(self.make_equals())
-            elif self.current_char == '<':
-                tokens.append(self.make_less_than())
-            elif self.current_char == '>':
-                tokens.append(self.make_greater_than())
-            elif self.current_char == ',':
-                tokens.append(Token(TT_COMMA, pos_start = self.pos))
-                self.advance()
-            else:
-                pos_start = self.pos.copy()
-                char = self.current_char
-                self.advance()
-                return [], IllegalCharError(pos_start, self.pos, "'" + char + "'")
-        tokens.append(Token(TT_EOF, pos_start= self.pos))
-        return tokens, None
+    # Operators
+    'PLUS',
+    'MINUS',
+    'MUL',
+    'DIV',
+    'INT_DIV',
 
-    
-    #make numbers
-    def make_nums(self):
-        num_str = ''
-        dot_count = 0
-        pos_start = self.pos.copy()
+    #Comparision Operators
+    'EQ',
+    'DUB_EQ',
+    'NT_EQ',
+    'LT',
+    'GT',
 
-        while self.current_char != None and self.current_char in NUMS + '.':
-            if self.current_char == '.':
-                if dot_count == 1: break
-                dot_count += 1
-            num_str += self.current_char
-            self.advance()
-        if dot_count == 0:
-            return Token(TT_INT, int(num_str), pos_start, self.pos)
-        else:
-            return Token(TT_FLOAT, float(num_str), pos_start, self.pos)
-        
+    #Dividers/ Brackets
+    'LPAREN', #(
+    'RPAREN', #)
+    'LCURLY', # {
+    'RCURLY', # }
 
-    #make identifier
-    def make_identifier(self):
-        id_str = ''
-        pos_start = self.pos.copy()
+    # Terminators
+    'COLON', # :
+    'COMMA', #,
 
-        while self.current_char != None and self.current_char in ALPHANUM + '_':
-            id_str += self.current_char
-            self.advance()
-        token_type = TT_KEYWORD if id_str in KEYWORDS else TT_IDENTIFIER
-        return Token(token_type, id_str, pos_start, self.pos)
+    # Signs
+    'DBLT',
+    'BANG',
 
-    #make strings char by char
-    def make_strings(self):
-        string = ''
-        pos_start = self.pos.copy()
-        escape_char = False
-        self.advance()
+    #Extras
+    'LINE',
 
-        escape_chars = {
-            'n' : '\n',
-            't' : '\t',  
-        }
+)
 
-        while self.current_char != None and (self.current_char != "'" or escape_char):
-            if escape_char:
-                string += escape_chars.get(self.current_char, self.current_char)
-            else:
-                if self.current_char == '\\':
-                    escape_char = True
-                else:
-                    string += self.current_char
-            self.advance()
-            escape_char = False
-        
-        self.advance()
-        return Token(TT_STRING, string, pos_start, self.pos)
 
-    ##make minus or arrow
-    def make_minus_or_arrow(self):
-        token_type = TT_MINUS
-        pos_start = self.pos.copy()
-        self.advance()
+## LEXER EXPRESSIOŃ #
 
-        if self.current_char == '>':
-            self.advance()
-            token_type = TT_ARROW
-        
-        return Token(token_type, pos_start=pos_start, pos_end = self.pos)
+# Parsing char tokens with regex.
 
-    def make_not_equals(self):
-        pos_start = self.pos.copy()
-        
-        #move one step
-        self.advance()
-        # because not equals looks like '!='
-        if self.current_char == '=':
-            self.advance()
-            return Token(TT_NE, pos_start=pos_start, pos_end = self.pos), None
-        
-    
-    def make_equals(self):
-        token_type = TT_EQ
+# Operators
+t_PLUS = r'\+'
+t_MINUS = r'-'
+t_MUL = r'\*'
+t_DIV = r'/'
+t_INT_DIV = r'//'
 
-        pos_start = self.pos.copy()
+# Dividers / Brackets
+t_LPAREN = r'\('
+t_RPAREN = r'\)'
+t_LCURLY = r'{'
+t_RCURLY = r'}'
 
-        self.advance()
+# Comparision Operators
+t_EQ = r'\='
+t_DUB_EQ = r'=='
+t_NT_EQ = r'!='
+t_LT = r'<'
+t_GT = r'>'
 
-        if self.current_char == '=':
-            self.advance()
-            token_type = TT_EQUALS
-        return Token(token_type, pos_start = pos_start, pos_end = self.pos)
-    
-    def make_less_than(self):
-        token_type = TT_LT
+#Terminators
+t_COMMA = r','
+t_COLON = r':'
 
-        pos_start = self.pos.copy()
-        if self.current_char == '=':
-            self.advance()
-            token_type = TT_LTE
-        return Token(token_type, pos_start = pos_start, pos_end = self.pos)
-    
-    def make_greater_than(self):
-        token_type = TT_GT 
-        pos_start = self.pos.copy()
+#Signs
+t_DBLT = r'<<'
+t_BANG = r'!'
+t_LINE = r'\|'
 
-        self.advance()
 
-        if self.current_char == '=':
-            self.advance()
-            token_type = TT_GTE
-        return Token(token_type, pos_start = pos_start, pos_end = self.pos)
-    
-    
+### LEXING THE TYPES ### 
+
+#Floating values
+def t_FLOAT(tok):
+    #search for the pattern with one point
+    r"""\d+\.\d+"""
+    tok.value = float(tok.value)
+    return tok
+
+# Integer
+def t_INT(tok):
+    #search digits
+    r"""\d+"""
+    tok.value = int(tok.value)
+    return tok
+
+#strings 
+def t_STRING(tok):
+    #pattern match the a-z, A-Z , _ 0-9 , and esp chars
+    r""""[a-zA-Z_ 0-9!?]*\""""
+    tok.value = str(tok.value)[1:1]
+    return tok
+
+
+## Tokenizeres for the keywords
+## Never tokenize the keywords in this way, its always a bad idea.
+
+'''
+#man
+def t_MAN(tok):
+    r"""man"""
+    tok.type = "MAN"
+    return tok
+
+#if/yedi
+def t_IF(tok):
+    r"""yedi"""
+    tok.type = "YEDI"
+    return tok
+
+#else/navaye
+def t_NAVAYE(tok):
+    r"""navaye"""
+    tok.type = "NAVAYE"
+    return tok
+
+# vidhi/method
+def t_VIDHI(tok):
+    r"""vidhi"""
+    tok.type = "VIDHI"
+    return tok
+
+#output/write/print/return
+def t_LEKHA(tok):
+    r"""lekha"""
+    tok.type = "LEKHA"
+    return tok
+
+#read/input/scanf
+def t_PADHA(tok):
+    r"""padha"""
+    tok.type = "PADHA"
+    return tok
+'''
+# unique identifers and keywords
+def t_ID(tok):
+    r"""[a-zA-Z_][a-zA-Z_0-9]*"""
+    if tok.value in keywords:
+        tok.type = tok.value
+    else:
+        tok.type = "ID"
+    return tok
+
+# Tracking the line breaks with regex.
+# Why do this - it will get it difficult to track and parse
+# escape chars later
+def t_newline(tok):
+    r"""\n+"""
+    tok.lexer.lineno += len(tok.value)
+
+
+## Tracking the column numbers
+## Lex.py does not do any automatic column tracking.
+## but id records pos information related to each token with lexpos attribute
+## We can compute column number with a sep step
+## Count backwards until we reach a newline
+
+def find_column(input, token):
+    line_start = input.rfind('\n',0,token.lexpos) + 1
+    return (token.lexpos - line_start) + 1
+
+"""This is only required if the token declartion 
+isn't done
+def t_COMMENT(t):
+    r'\/\/.*'
+    #Not returning value because comments are discarded
+    pass
+"""
+# Ignore tabs and Spaces.
+# NET = Non esstional Token
+t_ignore = ' \t'
+
+# Comments
+# C style comments
+t_ignore_COMMENT = r'\/\/.*' 
+
+
+## Simple Error Handling rules.
+def t_error(tok):
+    err_msg = "Illegal character Error {}".format(tok.value[0])
+    #print the error message
+    print(err_msg)
+    #skip the token
+    tok.lexer.skip(1)
+
+## Handling the EOF (End of File)
+## The function t_eof is used to handle EOF
+## Integrate during the parsing process
+## when I am actually working with separate files
+"""
+def t_eof(tok):
+    more = raw_input("...")
+    if more:
+        self.lexer.input(more)
+        return self.lexer.token()
+    return None
+"""
+
+#Initialize the Flex method.
+
+lexer = lex.lex()
 
 
