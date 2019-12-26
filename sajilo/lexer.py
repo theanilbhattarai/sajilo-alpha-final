@@ -11,18 +11,28 @@ Token are defined here to make it easier to reuse the values later
 Reserved keywords need to be done separately
 '''
 
-keywords = (
-        # Reserved keywords, Always required
+keywords = {
+    # Reserved keywords, Always required
     ## Needs refactoring. Never do this way.
-    'MAN', #VAR
-    'YEDI', #IF
-    'NAVAYE', #ELSE
-    'LEKHA', #PRINT/OUTPUT/RETURN
-    'PADHA', #READ/INPUT/SCANF
-    'VIDHI', #FUNCTION/DEF
-)
+    'yedi': 'IF',
+    'navaye': 'ELSE',
 
-tokens = keywords + (
+    'loop': 'FOR',
+    'lai': 'IN',
+    'jaba': 'WHILE',
+    'anta': 'EXIT',
+
+    'vidhi': 'FUNCTION',
+    'pathau': 'RETURN',
+
+    'lekha': 'PRINT',
+
+    'ra': 'AND',
+    'athawa': 'OR',
+    'haina': 'NOT',
+}
+
+tokens = list(keywords.values()) + (
     # Different Types
     'INT', #Integer - Anka
     'FLOAT', #Floating point values
