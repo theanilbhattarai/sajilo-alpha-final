@@ -2,7 +2,8 @@
 
 #Importing Lex and Yacc from the ply module
 
-from ply import lex
+from ply.lex import lex
+import sajilo.exceptions
 
 
 # Tokens 
@@ -180,6 +181,8 @@ def t_STRING(t):
     return t
 
 
+def t_error(t):
+    raise sajilo.exceptions.UnexpectedCharacter("Unexpected character '%s' at line %d" % (t.value[0], t.lineno))
 
 #Build the lexer
 lexer = lex.lex()
