@@ -6,7 +6,7 @@ import pprint
 import sys
 
 
-def execute(source, show_ast: bool=False, disable_warnings: bool=True):
+def execute(source, show_ast: bool=True, disable_warnings: bool=True):
     p.disable_warnings = disable_warnings
 
     try:

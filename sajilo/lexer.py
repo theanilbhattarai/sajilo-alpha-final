@@ -2,7 +2,7 @@
 
 #Importing Lex and Yacc from the ply module
 
-from ply.lex import lex
+import ply.lex as lex
 import sajilo.exceptions
 
 
