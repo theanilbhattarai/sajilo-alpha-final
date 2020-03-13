@@ -10,8 +10,8 @@ lekha a, "\n";
 b = 5.0;
 
 //Changing type from integer to float
-//c = dash(a);
+c = dash(a);
 
 lekha b, "\n";
 
-//lekha c, "\n";
+lekha c, "\n";
