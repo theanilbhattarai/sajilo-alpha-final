@@ -1,0 +1,28 @@
+// File operations testing in Sajilo
+// Sajilo supports basic file IO operations
+// available functions 
+
+file_name = file_khola("name.txt","w");
+// opens a file named name.txt
+
+yedi file_name {
+    lekha "File created!\n";
+}
+
+// lists = samuha
+list = [1,2,3,4,5];
+
+//change type into string
+sb = sabda(list);
+
+//write  and close file
+file_lekha(file_name, sb);
+file_banda(file_name);
+
+padhne_file = file_khola("name.txt","r");
+
+//read from file
+data = file_padha(padhne_file);
+lekha data, "\n";
+
+

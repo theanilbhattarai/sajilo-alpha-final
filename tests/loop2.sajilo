@@ -1,0 +1,19 @@
+// Testing the syntax error and missing semi-colon
+// on line 6
+
+num = 0;
+
+loop {
+    num = num + 1
+
+    number = padha("Euta number vannus, x in katnus.");
+
+    lekha number;
+    
+    lekha "\n";
+
+    yedi number == "x" {
+        anta;
+    }
+
+}

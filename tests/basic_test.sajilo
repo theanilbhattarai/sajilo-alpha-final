@@ -1,0 +1,3 @@
+//simple hello world
+lekha "Hello Sansaar\n";
+lekha 2+4;

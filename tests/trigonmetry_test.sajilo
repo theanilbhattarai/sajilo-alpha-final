@@ -1,0 +1,19 @@
+// Testing mathematical functions in sajilo
+// Sajilo has basic math ops
+
+
+lekha "Testing Trigonometry functions\n";
+lekha sin(0), "\n";
+//expected value : 0
+lekha cos(30), "\n";
+// 0.16
+lekha tan(0), "\n";
+// 0
+lekha atan(30), "\n";
+//1.5
+
+
+lekha "Testing Logs\n";
+lekha log(30);
+//3.4
+

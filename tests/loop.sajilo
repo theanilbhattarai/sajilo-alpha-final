@@ -1,0 +1,9 @@
+// Test for the simple for loop in sajilo langauge
+
+
+i = 0;
+
+loop i lai 1 -> 10 {
+    lekha i;
+    lekha "\n";
+}
