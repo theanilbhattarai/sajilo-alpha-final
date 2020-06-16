@@ -1,0 +1,13 @@
+// Simple yedi ra navaye
+// IF and ELSE for Sajilo Language
+
+num_str = padha("Euta number vannus: ");
+
+num_anka = anka(num_str);
+
+yedi num_anka % 2 == 0 {
+    lekha "Jod sankhya!\n";
+}
+navaye {
+    lekha "Bijod Sankhya!\n";
+}

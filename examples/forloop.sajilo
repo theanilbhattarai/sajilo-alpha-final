@@ -1,0 +1,17 @@
+// A program to print numbers from 1 to N 
+
+num = padha("Nth digit vannus: \n");
+
+// Type casting into integer
+n = anka(num);
+
+//initialize 
+i = 0;
+
+lekha "Printing Numbers from ", i, " to ", n, "\n\n";
+// Loop i upto n by 1.
+
+loop i lai 1 -> n {
+    lekha i, "\n";
+
+}

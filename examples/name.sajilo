@@ -1,0 +1,6 @@
+// Takes the name input and prints the message
+// Sajilo Programming Language
+
+mero_naam = padha("Tapaiko naam vannus : \n");
+
+lekha "Hello, ", mero_naam, ". How are you? \n";

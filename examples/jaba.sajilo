@@ -1,0 +1,21 @@
+// A simple program to find odd and even number.
+
+ans = "y";
+
+jaba ans == "y" {
+    user_input = padha("Enter one number: \n");
+
+    yedi user_input == "n" {
+        ans = user_input;
+    }
+
+    sankhya = anka(user_input);
+    
+    yedi sankhya < 0 {
+        lekha "Negative number";
+    }
+    navaye {
+        lekha "Positive Number";
+    }
+
+}
