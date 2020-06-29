@@ -1,5 +1,12 @@
 # Sajilo Programming Language Final Alpha Version :smiley:
-This is the final alpha version of Sajilo Programming Language, written in PLY and Python.
+
+This is the final alpha version of Sajilo 
+
+#### ‘Sajilo Programming Language’ is a basic programming language compiler written in Python and PLY. It offers Romanized Nepali syntax for the ease of use to the Nepali speakers.  
+
+![English Logo](screenshots/englogo.png)
+
+![Nepali Logo](screenshots/np_logo.png)
 
 ## Requirements
 :one: PLY (Python Lex and Yacc)
