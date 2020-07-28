@@ -1,0 +1,10 @@
+// This is a simple program written in sajilo langauge
+// It calculates the value of area given the length and breadth
+
+vidhi chhetrafal(lambai, chaudai) {
+    cht = 2 * ( lambai + chaudai );
+
+    pathau cht;
+}
+
+lekha "Chhetrafal = ", chhetrafal(5,4), "\n";

@@ -1,0 +1,1 @@
+alias saj='python3 sajilo.py'
