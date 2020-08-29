@@ -1,0 +1,13 @@
+// Testing functions (Vidhi) without arguments
+// Does not support optional arguments
+
+vidhi namaste() {
+    lekha "Namaste\n";
+}
+
+a = 0;
+
+jaba a < 6 {
+    a = a + 1;
+    namaste();
+}

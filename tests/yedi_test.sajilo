@@ -1,0 +1,10 @@
+// Simple program to test yedi/navaye (IF/ELSE)
+
+sankhya = 5;
+
+yedi sankhya % 2 == 0 {
+    lekha "Even - Fail\n";
+}
+navaye {
+    lekha "Odd - Pass\n";
+}

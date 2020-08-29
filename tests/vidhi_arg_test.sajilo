@@ -1,0 +1,11 @@
+// Testing Functions (Vidhi) with arguments
+
+//prints the square of the number
+
+vidhi double(a) {
+    lekha a * a, "\n";
+}
+
+loop i lai 1 -> 5 {
+    double(i);
+}

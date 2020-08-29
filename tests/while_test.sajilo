@@ -1,0 +1,9 @@
+// Simple test for a while loop
+// Prints number from 1 to 10
+
+i = 1;
+
+jaba i < 11 {
+    lekha i, "\n";
+    i = i + 1;
+}
