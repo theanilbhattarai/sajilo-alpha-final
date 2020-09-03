@@ -1,0 +1,20 @@
+// This is a simple program written in sajilo langauge
+// It calculates the value of area given the length and breadth
+
+
+l = anka(padha("Lambai vannus: \n"));
+//lambai = anka(l);
+	
+c = anka(padha("Chaudai vannus: \n"));
+//chaudai = anka(c);
+
+vidhi chhetrafal(lambai, chaudai) {
+    cht = 2 * ( lambai + chaudai );
+
+    pathau cht;
+}
+
+lekha "Chhetrafal = ", chhetrafal(l, c), "\n";
+
+
+
