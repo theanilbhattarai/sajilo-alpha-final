@@ -1,0 +1,21 @@
+// A simple program to find positive and negative numbers.
+
+ans = "y";
+
+jaba ans == "y" {
+    user_input = padha("Enter one number: \n");
+
+    yedi user_input == "n" {
+        ans = user_input;
+    }
+
+    sankhya = anka(user_input);
+    
+    yedi sankhya < 0 {
+        lekha "Nakaratmak Negative number \n";
+    }
+    navaye {
+        lekha " Sakaratmak Positive Number \n";
+    }
+
+}
